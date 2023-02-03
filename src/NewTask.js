@@ -1,9 +1,9 @@
-function NewTask({ task }) {
+function NewTask({ taskId, taskName, handleDelete }) {
   return (
     <div>
-      <li key={task}>{task}</li>
+      <li key={taskId}>{taskName}</li>
       <button>Edit</button>
-      <button>Delete</button>
+      <button onClick={() => handleDelete(taskId)}>Delete</button>
     </div>
   );
 }

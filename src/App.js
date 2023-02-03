@@ -3,6 +3,7 @@ import { useState } from "react";
 import NewTask from "./NewTask";
 
 function App() {
+  //todo item will be an object that has id and task name
   const [todoList, setTodoList] = useState([]);
   const [newTask, setNewTask] = useState("");
 
@@ -12,14 +13,25 @@ function App() {
   };
 
   const handleSubmit = (event) => {
-    //on click, todo list will have another element
     event.preventDefault();
-    const newTodoList = [...todoList, newTask];
-    setTodoList(newTodoList);
+    const task = {
+      // if there is nothing in array, id:1 other wise, id:last-element-plus-1
+      id: todoList.length === 0 ? 1 : todoList[todoList.length - 1].id + 1,
+      taskName: newTask,
+    };
+    //define new variable to include whatever is already inside todoList with the newTask added
+    setTodoList([...todoList, task]);
+    //reset input to empty string
     setNewTask("");
   };
 
-  console.log("todoList", todoList);
+  const handleDelete = (id) => {
+    //onClick, delete task from todoList
+    //todoList is an array
+    //use filter. with each iteration, if false is returned, that word will not appear in shallow copy.
+    //prevent deleting two elements of the same name
+    setTodoList(todoList.filter((task) => (task.id !== id ? true : false)));
+  };
 
   return (
     <div className="App">
@@ -33,7 +45,13 @@ function App() {
         <h1>Tasks</h1>
         <ul>
           {todoList.map((task) => {
-            return <NewTask task={task} />;
+            return (
+              <NewTask
+                taskId={task.id}
+                taskName={task.taskName}
+                handleDelete={handleDelete}
+              />
+            );
           })}
         </ul>
       </div>
